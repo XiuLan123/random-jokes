@@ -15,7 +15,7 @@ const errorPage = `
   </head>
   <body>
     <h1>404 - File Not Found!</h1>
-    <p>Perhaps you are looking for <a href="/">random-joke</a></p>
+    <p>Perhaps you are looking for <a href="/">random-jokes</a></p>
   </body>
 </html>`;
 
@@ -76,7 +76,7 @@ const onRequest = (request, response) => {
     console.log("parsedUrl=", parsedUrl);
     console.log("pathname=", pathname);
 
-    if (pathname == "/random-joke") {
+    if (pathname == "/") {
         response.writeHead(200, {
             'Content-Type': 'application/json'
         });
