@@ -49,7 +49,6 @@ const getRandomJokeJSON = (limit = 1) => {
   for (let i = 0; i < limit2; i += 1) {
     const responseObj = qList[Math.floor(Math.random() * 10)];
     responseObjList[i] = responseObj;
-    console.log('1');
   }
   return JSON.stringify(responseObjList);
 };
