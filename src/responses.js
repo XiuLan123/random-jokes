@@ -1,3 +1,7 @@
+const fs = require('fs');
+
+const defaultStyles = fs.readFileSync(`${__dirname}/../styles/default-styles.css`);
+
 const qList = [];
 qList[0] = {
   q: 'What do you call a very small valentine?',
@@ -86,12 +90,38 @@ const getRandomJokeXML = (limit = 1) => {
   return xmlList;
 };
 
-const getRandomJokeResponse = (request, response, params, acceptedTypes) => {
+const getCSSResponse = (request, response) => {
+  response.writeHead(200, {
+    'Content-Type': 'text/css',
+  });
+  response.write(defaultStyles);
+  response.end();
+};
+
+// Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
+// Refactored to an arrow function by ACJ
+const getBinarySize = (string) => Buffer.byteLength(string, 'utf8');
+
+const getRandomJokeResponse = (request, response, params, acceptedTypes, httpMethod) => {
   if (acceptedTypes.includes('text/xml')) {
+    if (httpMethod === 'HEAD') {
+      response.writeHead(200, {
+        'Content-Type': 'text/xml',
+        'Content-Length': getBinarySize(getRandomJokeXML(params.limit)),
+      });
+      response.end();
+    } else {
+      response.writeHead(200, {
+        'Content-Type': 'text/xml',
+      });
+      response.write(getRandomJokeXML(params.limit));
+      response.end();
+    }
+  } else if (httpMethod === 'HEAD') {
     response.writeHead(200, {
-      'Content-Type': 'text/xml',
+      'Content-Type': 'application/json',
+      'Content-Length': getBinarySize(getRandomJokeJSON(params.limit)),
     });
-    response.write(getRandomJokeXML(params.limit));
     response.end();
   } else {
     response.writeHead(200, {
@@ -103,3 +133,4 @@ const getRandomJokeResponse = (request, response, params, acceptedTypes) => {
 };
 
 module.exports.getRandomJokeResponse = getRandomJokeResponse;
+module.exports.getCSSResponse = getCSSResponse;

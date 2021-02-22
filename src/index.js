@@ -8,6 +8,7 @@ const jsonHandler = require('./responses.js');
 
 const urlStruct = {
   '/': jsonHandler.getRandomJokeResponse,
+  '/css': jsonHandler.getCSSResponse,
   '/random-jokes': jsonHandler.getRandomJokeResponse,
   notFound: htmlHandler.get404Response,
 };
@@ -25,9 +26,10 @@ const onRequest = (request, response) => {
   } = parsedUrl;
 
   const params = query.parse(parsedUrl.query);
+  const httpMethod = request.method;
 
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response, params, acceptedTypes);
+    urlStruct[pathname](request, response, params, acceptedTypes, httpMethod);
   } else {
     urlStruct.notFound(request, response);
   }
