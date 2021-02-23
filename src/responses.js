@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const defaultStyles = fs.readFileSync(`${__dirname}/../styles/default-styles.css`);
+const defaultStyles = fs.readFileSync(`${__dirname}/../client/default-styles.css`);
 
 const qList = [];
 qList[0] = {
